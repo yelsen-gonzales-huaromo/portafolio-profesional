@@ -1,26 +1,42 @@
 const experienceData = [
     {
         id: 1,
-        position: "Senior Software Engineer",
-        company: "Empresa XYZ",
-        period: "2022 - Presente",
-        description: "Liderazgo técnico en equipo de 8 desarrolladores. Implementación de arquitectura de microservicios que redujo tiempos de respuesta en 40%.",
-        technologies: ["React", "Kubernetes", "AWS"]
+        position: "Software Engineer",
+        company: "Proyectos Independientes · Huaraz",
+        period: "Noviembre 2025 - Presente",
+        description: "Desarrollo full stack hands-on de productos a medida: ERP corporativo para construcción, facturación electrónica SUNAT, e integración Cloud + WhatsApp Cloud API.",
+        achievements: [
+            "ERP Corporativo para Construcción: Laravel + React con Gantt dinámicos y presupuestos de obra",
+            "Facturación Electrónica SUNAT en .NET 9 + Blazor (reactiva, segura, conforme a normativa)",
+            "Orquestación de servicios en AWS EC2/S3 + integración WhatsApp Cloud API con Node.js",
+            "Pipelines CI/CD en Vercel bajo metodología GitFlow"
+        ],
+        technologies: ["Laravel", "React", ".NET", "Blazor", "Node.js", "AWS"]
     },
     {
         id: 2,
-        position: "Full Stack Developer",
-        company: "StartUp ABC",
-        period: "2020 - 2022",
-        description: "Desarrollo integral de plataforma SaaS. Diseño e implementación de APIs RESTful y optimización de base de datos.",
-        technologies: ["Node.js", "MongoDB", "Vue.js"]
+        position: "Apoyo Técnico en Gestión de Sistemas",
+        company: "UNASAM · OGTISE",
+        period: "Abril 2025 - Julio 2025",
+        description: "Apoyo técnico en la Oficina General de Tecnologías de Información, Sistemas y Estadística. Desarrollo de herramientas internas y soporte para gestión pública.",
+        achievements: [
+            "Scripts para control documental: -40% tiempos de respuesta administrativa",
+            "Soporte técnico y módulos de trazabilidad de activos institucionales",
+            "Procesamiento de información crítica y reportes técnicos para toma de decisiones"
+        ],
+        technologies: ["PHP", "MySQL", "Bootstrap", "SIGA-MEF"]
     },
     {
         id: 3,
-        position: "Junior Developer",
-        company: "Consultora Tech",
-        period: "2018 - 2020",
-        description: "Mantenimiento y desarrollo de nuevas funcionalidades para sistemas legacy. Participación en migración a la nube.",
-        technologies: ["Java", "Spring Boot", "MySQL"]
+        position: "Desarrollador de Sistemas e Inventarios",
+        company: "Tienda H. Gonzales · Huaral",
+        period: "Marzo 2024 - Febrero 2025",
+        description: "Construcción de sistema de gestión de ventas e inventarios para eliminar procesos manuales del negocio familiar.",
+        achievements: [
+            "Sistema de gestión de ventas y control de existencias con Laravel + MySQL",
+            "Reemplazo total de procesos manuales por flujo digital",
+            "Tableros de control y reportabilidad para análisis de flujo de caja mensual"
+        ],
+        technologies: ["Laravel", "MySQL", "Bootstrap", "PHP"]
     }
 ];

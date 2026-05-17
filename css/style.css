@@ -632,6 +632,14 @@ section {
     width: 100%;
 }
 
+/* Hide nav-link icons on desktop — they're only meant for the mobile drawer.
+   The mobile responsive (max-width: 991px) re-enables them with proper styling. */
+@media (min-width: 992px) {
+    .nav-link-icon {
+        display: none !important;
+    }
+}
+
 /* Theme Toggle Button */
 .theme-toggle {
     background: transparent;

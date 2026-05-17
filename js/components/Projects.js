@@ -68,6 +68,37 @@ export function loadProjects() {
         `;
     };
 
+    // Brand color per tech — drives the chip color in the tech row below the image.
+    // Falls back to the project's accent if a tech isn't recognized.
+    const getTechBrandColor = (tag = '') => {
+        const t = tag.toLowerCase();
+        if (t.includes('react native'))                 return '#a855f7';
+        if (t.includes('react'))                        return '#61dafb';
+        if (t.includes('vue'))                          return '#42b883';
+        if (t.includes('angular'))                      return '#dd0031';
+        if (t.includes('next'))                         return '#ffffff';
+        if (t.includes('node'))                         return '#84cc16';
+        if (t.includes('python'))                       return '#3776ab';
+        if (t.includes('django'))                       return '#0c4b33';
+        if (t.includes('typescript'))                   return '#3178c6';
+        if (t.includes('javascript'))                   return '#f7df1e';
+        if (t.includes('mongodb') || t.includes('mongo')) return '#10b981';
+        if (t.includes('postgres'))                     return '#336791';
+        if (t.includes('mysql'))                        return '#4479a1';
+        if (t.includes('docker'))                       return '#0db7ed';
+        if (t.includes('kubernetes'))                   return '#326ce5';
+        if (t.includes('aws'))                          return '#ff9900';
+        if (t.includes('azure'))                        return '#0078d4';
+        if (t.includes('firebase'))                     return '#f59e0b';
+        if (t.includes('tailwind'))                     return '#06b6d4';
+        if (t.includes('openai'))                       return '#10a37f';
+        if (t.includes('stripe'))                       return '#635bff';
+        if (t.includes('graphql'))                      return '#e10098';
+        if (t.includes('redis'))                        return '#dc382d';
+        if (t.includes('go') && tag.length <= 3)        return '#00add8';
+        return '#22d3ee';
+    };
+
     const buildProjectCard = (project, idx, ctx = 'main') => {
         const fallback = 'https://via.placeholder.com/800x500?text=Proyecto';
         const title = escapeHtml(project.title);
@@ -77,42 +108,63 @@ export function loadProjects() {
         const carouselId = `pcmCarousel_${ctx}_${idx}`;
         const accent = getProjectAccent(project.tags);
         const imageCount = (project.images || []).length;
-        const primaryTag = project.tags && project.tags[0] ? escapeHtml(project.tags[0]) : 'Proyecto';
         const primaryIcon = project.tags && project.tags[0] ? getTechIconClass(project.tags[0]) : 'fas fa-code';
-
-        const tagsHTML = (project.tags || []).slice(0, 3).map(tag => `
-            <span class="kit-tag-overlay" title="${escapeHtml(tag)}"><i class="${getTechIconClass(tag)}"></i>${escapeHtml(tag)}</span>
-        `).join('');
 
         const hasDemo = demo && demo !== '#';
         const hasRepo = repo && repo !== '#';
 
-        return `
-        <article class="kit-card" style="--accent-color: ${accent};">
-            <div class="kit-card-media">
-                ${buildImageGallery(project.images, carouselId, fallback)}
-                <div class="kit-card-media-fallback"><i class="${primaryIcon}"></i></div>
-                <div class="kit-card-media-overlay"></div>
-                <div class="kit-card-top-row">
-                    <span class="kit-chip"><i class="${primaryIcon}"></i>${primaryTag.toUpperCase()}</span>
-                    ${imageCount > 1 ? `<span class="kit-chip kit-chip--neutral"><i class="fas fa-images"></i>${imageCount}</span>` : ''}
-                </div>
-                <div class="kit-card-tags-overlay">${tagsHTML}</div>
+        // Tech chips with brand color + brand icon — placed below the image
+        const techChipsHTML = (project.tags || []).slice(0, 4).map(tag => `
+            <span class="proj-tech-chip" style="--tech-color: ${getTechBrandColor(tag)};">
+                <i class="${getTechIconClass(tag)}"></i>${escapeHtml(tag)}
+            </span>
+        `).join('');
+
+        // Optional stats row — only renders if the project has any stats
+        const stats = project.stats;
+        const statsHTML = stats ? `
+            <div class="proj-card-stats">
+                ${stats.stars  != null ? `<div class="proj-stat"><i class="fas fa-star"></i><div><span class="proj-stat-value">${stats.stars}</span><span class="proj-stat-label">Stars</span></div></div>` : ''}
+                ${stats.forks  != null ? `<div class="proj-stat"><i class="fas fa-code-fork"></i><div><span class="proj-stat-value">${stats.forks}</span><span class="proj-stat-label">Forks</span></div></div>` : ''}
+                ${stats.issues != null ? `<div class="proj-stat"><i class="fas fa-circle-dot"></i><div><span class="proj-stat-value">${stats.issues}</span><span class="proj-stat-label">Issues</span></div></div>` : ''}
+                ${stats.contributors != null ? `<div class="proj-stat"><i class="fas fa-users"></i><div><span class="proj-stat-value">${stats.contributors}</span><span class="proj-stat-label">Contribs</span></div></div>` : ''}
             </div>
-            <div class="kit-card-body">
-                <h3 class="kit-card-title">${title}</h3>
-                <p class="kit-card-desc">${description}</p>
-                <div class="kit-card-actions">
-                    <a href="${hasDemo ? demo : '#'}"
-                       ${hasDemo ? 'target="_blank" rel="noopener"' : 'onclick="event.preventDefault();" aria-disabled="true"'}
-                       class="kit-btn kit-btn-primary ${!hasDemo ? 'is-disabled' : ''}">
-                        <i class="fas fa-external-link-alt"></i><span>Ver Software</span>
-                    </a>
-                    <a href="${hasRepo ? repo : '#'}"
-                       ${hasRepo ? 'target="_blank" rel="noopener"' : 'onclick="event.preventDefault();" aria-disabled="true"'}
-                       class="kit-btn kit-btn-ghost ${!hasRepo ? 'is-disabled' : ''}">
-                        <i class="fab fa-github"></i><span>Código</span>
-                    </a>
+        ` : '';
+
+        return `
+        <article class="proj-card" style="--accent-color: ${accent};">
+            <!-- Top: small icon badge -->
+            <div class="proj-card-icon" aria-hidden="true">
+                <i class="${primaryIcon}"></i>
+            </div>
+
+            <!-- Center: large image area with gallery -->
+            <div class="proj-card-image">
+                ${buildImageGallery(project.images, carouselId, fallback)}
+                <div class="proj-card-image-fallback"><i class="${primaryIcon}"></i></div>
+                <div class="proj-card-image-glow"></div>
+                ${imageCount > 1 ? `<span class="proj-card-image-count"><i class="fas fa-images"></i>${imageCount}</span>` : ''}
+            </div>
+
+            <!-- Body: title, tech, description, stats, buttons -->
+            <div class="proj-card-body">
+                <h3 class="proj-card-title">${title}</h3>
+                ${techChipsHTML ? `<div class="proj-card-tech">${techChipsHTML}</div>` : ''}
+                <p class="proj-card-desc">${description}</p>
+                ${statsHTML}
+                <div class="proj-card-actions">
+                    <button type="button"
+                            onclick="window.openProjectCaseStudy(${project.id})"
+                            class="proj-btn proj-btn--primary">
+                        <span>Ver Caso</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button type="button"
+                            onclick="window.openProjectLiveDemo(${project.id})"
+                            class="proj-btn proj-btn--ghost">
+                        <span>Live Demo</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </button>
                 </div>
             </div>
         </article>
@@ -158,4 +210,600 @@ export function loadProjects() {
         `;
         wireCounters(allProjectsContainer);
     }
+
+    // === Case Study Page — shown inline, hides the rest of the site ===
+    // We keep the navbar visible (user request). All other <section> elements
+    // are hidden when the case study is open, and restored on "Back".
+
+    const buildCaseStudyHTML = (project) => {
+        const accent = getProjectAccent(project.tags);
+        const primaryIcon = project.tags && project.tags[0] ? getTechIconClass(project.tags[0]) : 'fas fa-code';
+        const cs = project.caseStudy || {};
+        const hasDemo = project.demoLink && project.demoLink !== '#';
+
+        // Header with title + badges + tagline + description
+        const badges = (cs.badges || []).map(b => `<span class="proj-detail-badge"><i class="fas fa-circle"></i>${escapeHtml(b)}</span>`).join('');
+        const headerHTML = `
+            <div class="proj-detail-hero">
+                <div class="proj-detail-hero-text">
+                    <span class="proj-detail-featured">${cs.featured ? '<i class="fas fa-circle"></i>Proyecto Destacado' : '<i class="far fa-circle"></i>Caso de Estudio'}</span>
+                    <h1 class="proj-detail-title">${escapeHtml(project.title)}</h1>
+                    ${project.tagline ? `<p class="proj-detail-tagline">${escapeHtml(project.tagline)}</p>` : ''}
+                    <p class="proj-detail-desc">${escapeHtml(cs.fullDescription || project.description || '')}</p>
+                    ${badges ? `<div class="proj-detail-badges">${badges}</div>` : ''}
+                </div>
+                <div class="proj-detail-hero-image">
+                    <img src="${(project.images && project.images[0]) || ''}" alt="${escapeHtml(project.title)}" loading="lazy">
+                    <div class="proj-detail-hero-glow"></div>
+                </div>
+            </div>
+        `;
+
+        // 3-column section: challenge | solution | results
+        const challengeBullets = (cs.challenge?.bullets || []).map(b =>
+            `<li><i class="fas fa-circle"></i><span>${escapeHtml(b)}</span></li>`
+        ).join('');
+
+        const challengeCol = cs.challenge ? `
+            <div class="proj-detail-col">
+                <div class="proj-detail-col-num">01</div>
+                <h3 class="proj-detail-col-title"><i class="fas fa-bullseye"></i>El Reto</h3>
+                ${cs.challenge.description ? `<p class="proj-detail-col-desc">${escapeHtml(cs.challenge.description)}</p>` : ''}
+                ${challengeBullets ? `<ul class="proj-detail-bullets">${challengeBullets}</ul>` : ''}
+            </div>
+        ` : '';
+
+        const codeSnippet = cs.solution?.code?.snippet
+            ? `<pre class="proj-detail-code"><code>${escapeHtml(cs.solution.code.snippet)}</code></pre>`
+            : '';
+
+        const solutionCol = cs.solution ? `
+            <div class="proj-detail-col">
+                <div class="proj-detail-col-num">02</div>
+                <h3 class="proj-detail-col-title"><i class="fas fa-puzzle-piece"></i>La Solución</h3>
+                ${cs.solution.description ? `<p class="proj-detail-col-desc">${escapeHtml(cs.solution.description)}</p>` : ''}
+                ${codeSnippet}
+            </div>
+        ` : '';
+
+        const resultsHTML = (cs.results || []).map(r => `
+            <div class="proj-detail-result">
+                <i class="${r.icon || 'fas fa-check'}"></i>
+                <div class="proj-detail-result-text">
+                    <span class="proj-detail-result-value">${escapeHtml(r.value)}</span>
+                    <div class="proj-detail-result-labels">
+                        <span class="proj-detail-result-label">${escapeHtml(r.label)}</span>
+                        ${r.sublabel ? `<span class="proj-detail-result-sublabel">${escapeHtml(r.sublabel)}</span>` : ''}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        const resultsCol = (cs.results && cs.results.length > 0) ? `
+            <div class="proj-detail-col">
+                <div class="proj-detail-col-num">03</div>
+                <h3 class="proj-detail-col-title"><i class="fas fa-chart-line"></i>Resultados</h3>
+                <div class="proj-detail-results">${resultsHTML}</div>
+            </div>
+        ` : '';
+
+        const threeColSection = (challengeCol || solutionCol || resultsCol) ? `
+            <div class="proj-detail-three-col">
+                ${challengeCol}
+                ${solutionCol}
+                ${resultsCol}
+            </div>
+        ` : '';
+
+        // Tech stack row
+        const techStackItems = (project.tags || []).map(tag => `
+            <div class="proj-detail-tech-item">
+                <i class="${getTechIconClass(tag)}" style="color: ${getTechBrandColor(tag)};"></i>
+                <span>${escapeHtml(tag)}</span>
+            </div>
+        `).join('');
+
+        const techStackSection = techStackItems ? `
+            <div class="proj-detail-tech-section">
+                <h3 class="proj-detail-section-title"><i class="fas fa-layer-group"></i>Tech Stack</h3>
+                <div class="proj-detail-tech-row">${techStackItems}</div>
+            </div>
+        ` : '';
+
+        // Architecture nodes (simple chip row)
+        const archItems = (cs.architecture || []).map(node => `
+            <div class="proj-detail-arch-node">
+                <div class="proj-detail-arch-icon"><i class="${node.icon || 'fas fa-cube'}"></i></div>
+                <div class="proj-detail-arch-text">
+                    <span class="proj-detail-arch-name">${escapeHtml(node.name)}</span>
+                    ${node.description ? `<span class="proj-detail-arch-desc">${escapeHtml(node.description)}</span>` : ''}
+                </div>
+            </div>
+        `).join('');
+
+        const archSection = archItems ? `
+            <div class="proj-detail-arch-section">
+                <h3 class="proj-detail-section-title"><i class="fas fa-sitemap"></i>Arquitectura del Sistema</h3>
+                <div class="proj-detail-arch-flow">${archItems}</div>
+            </div>
+        ` : '';
+
+        // Footer actions — open live demo always (mock page) when liveDemo data exists
+        const hasLiveDemo = !!project.liveDemo;
+        const footerActions = `
+            <div class="proj-detail-footer">
+                <button type="button" onclick="window.backToProjects()" class="proj-btn proj-btn--ghost">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Volver a Proyectos</span>
+                </button>
+                ${hasLiveDemo ? `
+                    <button type="button" onclick="window.openProjectLiveDemo(${project.id})" class="proj-btn proj-btn--primary">
+                        <span>Abrir Live Demo</span>
+                        <i class="fas fa-arrow-up-right-from-square"></i>
+                    </button>
+                ` : ''}
+            </div>
+        `;
+
+        return `
+            <button type="button" onclick="window.backToProjects()" class="proj-detail-back-link">
+                <i class="fas fa-arrow-left"></i>
+                <span>Volver a Proyectos</span>
+            </button>
+            <div class="proj-detail-page" style="--accent-color: ${accent};">
+                ${headerHTML}
+                ${threeColSection}
+                ${techStackSection}
+                ${archSection}
+                ${footerActions}
+            </div>
+        `;
+    };
+
+    // ===== Navigation state =====
+    // hiddenSections: sections/footer hidden when detail view is open. Only
+    //   populated ONCE on entry — preserved across case-study ↔ live-demo
+    //   toggles so "Volver a Proyectos" can restore everything.
+    // returnTarget: where to send the user when they click "Volver". If they
+    //   came from a Bootstrap modal (`#allProjectsModal`), we reopen it.
+    let hiddenSections = [];
+    let returnTarget = null;
+
+    // Hash routing — keeps the user on the same view on refresh / browser-back.
+    //   No hash → main portfolio
+    //   #caso-N → case study for project N
+    //   #demo-N → live demo for project N
+    const getRouteFromHash = () => {
+        const m = (window.location.hash || '').slice(1).match(/^(caso|demo)-(\d+)$/);
+        return m ? { type: m[1], id: parseInt(m[2], 10) } : null;
+    };
+
+    const setHash = (newHash) => {
+        const current = window.location.hash.slice(1);
+        if (current === newHash) return;
+        const url = newHash
+            ? `${window.location.pathname}${window.location.search}#${newHash}`
+            : `${window.location.pathname}${window.location.search}`;
+        history.pushState(null, '', url);
+    };
+
+    // Hide every <section> + footer EXCEPT the detail section. Only runs the
+    // first time we enter detail view (so toggling case-study ↔ live-demo
+    // doesn't clear the list we use to restore later).
+    const enterDetailView = () => {
+        if (hiddenSections.length > 0) return; // already in detail mode
+        document.querySelectorAll('section').forEach(sec => {
+            if (sec.id !== 'project-detail-section' && !sec.hidden) {
+                sec.hidden = true;
+                hiddenSections.push(sec);
+            }
+        });
+        const footer = document.querySelector('footer');
+        if (footer && footer.style.display !== 'none') {
+            footer.style.display = 'none';
+            hiddenSections.push(footer);
+        }
+    };
+
+    // Dismiss any open Bootstrap modal (the list modal "Todos los Proyectos")
+    // and remember it so we can reopen on return.
+    const dismissOpenModal = () => {
+        const openModalEl = document.querySelector('.modal.show');
+        if (!openModalEl || typeof bootstrap === 'undefined') return null;
+        const inst = bootstrap.Modal.getInstance(openModalEl);
+        if (inst) inst.hide();
+        return openModalEl.id;
+    };
+
+    window.openProjectCaseStudy = function (projectId) {
+        const project = data.find(p => String(p.id) === String(projectId));
+        if (!project) return;
+
+        const detailSection = document.getElementById('project-detail-section');
+        const detailContent = document.getElementById('project-detail-content');
+        if (!detailSection || !detailContent) return;
+
+        // Remember origin only on first entry (not on internal case ↔ demo toggle)
+        if (hiddenSections.length === 0) {
+            const fromModalId = dismissOpenModal();
+            returnTarget = fromModalId
+                ? { type: 'modal', id: fromModalId }
+                : { type: 'section', id: 'projects' };
+        }
+
+        detailContent.innerHTML = buildCaseStudyHTML(project);
+        enterDetailView();
+        detailSection.hidden = false;
+
+        setHash(`caso-${projectId}`);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.openProjectLiveDemo = function (projectId) {
+        const project = data.find(p => String(p.id) === String(projectId));
+        if (!project) return;
+        if (!project.liveDemo) {
+            alert('Demo no disponible para este proyecto aún.');
+            return;
+        }
+
+        const detailSection = document.getElementById('project-detail-section');
+        const detailContent = document.getElementById('project-detail-content');
+        if (!detailSection || !detailContent) return;
+
+        if (hiddenSections.length === 0) {
+            const fromModalId = dismissOpenModal();
+            returnTarget = fromModalId
+                ? { type: 'modal', id: fromModalId }
+                : { type: 'section', id: 'projects' };
+        }
+
+        detailContent.innerHTML = buildLiveDemoHTML(project);
+        enterDetailView();
+        detailSection.hidden = false;
+
+        setHash(`demo-${projectId}`);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.backToProjects = function () {
+        const detailSection = document.getElementById('project-detail-section');
+        if (!detailSection) return;
+
+        // Hide detail
+        detailSection.hidden = true;
+
+        // Restore everything we hid
+        hiddenSections.forEach(sec => {
+            if (sec.tagName === 'FOOTER') {
+                sec.style.display = '';
+            } else {
+                sec.hidden = false;
+            }
+        });
+        hiddenSections = [];
+
+        // Clear hash
+        setHash('');
+
+        // Send user back where they came from
+        if (returnTarget?.type === 'modal') {
+            const modalEl = document.getElementById(returnTarget.id);
+            if (modalEl && typeof bootstrap !== 'undefined') {
+                bootstrap.Modal.getOrCreateInstance(modalEl).show();
+            }
+        } else {
+            const targetId = returnTarget?.id || 'projects';
+            const targetSec = document.getElementById(targetId);
+            if (targetSec) {
+                setTimeout(() => targetSec.scrollIntoView({ behavior: 'smooth' }), 50);
+            }
+        }
+        returnTarget = null;
+    };
+
+    // Restore the right view based on the URL hash. Called on initial load
+    // (so refresh keeps the user on the case study they were viewing) and on
+    // browser back/forward (popstate).
+    const applyRouteFromHash = () => {
+        const route = getRouteFromHash();
+        if (!route) {
+            // No hash → main portfolio. If we're currently in detail, go back.
+            const detailSection = document.getElementById('project-detail-section');
+            if (detailSection && !detailSection.hidden) {
+                window.backToProjects();
+            }
+            return;
+        }
+        if (route.type === 'caso') window.openProjectCaseStudy(route.id);
+        else if (route.type === 'demo') window.openProjectLiveDemo(route.id);
+    };
+
+    // Initial route — if user refreshed on a #caso-N or #demo-N URL, restore it
+    applyRouteFromHash();
+
+    // Browser back/forward
+    window.addEventListener('popstate', applyRouteFromHash);
+
+    // ===== Live Demo page — interactive mockup (style of reference image 3) =====
+    const buildLiveDemoHTML = (project) => {
+        const accent = getProjectAccent(project.tags);
+        const primaryIcon = project.tags && project.tags[0] ? getTechIconClass(project.tags[0]) : 'fas fa-code';
+        const demo = project.liveDemo || {};
+        const url = demo.url || 'demo.example.com';
+        const menu = demo.menu || ['Inicio', 'Servicios', 'Configuración'];
+        const stats = demo.stats || [];
+
+        const menuItemsHTML = menu.map((item, i) => `
+            <button type="button" class="demo-menu-item ${i === 0 ? 'is-active' : ''}"
+                onclick="this.parentNode.querySelectorAll('.demo-menu-item').forEach(b=>b.classList.remove('is-active'));this.classList.add('is-active');">
+                <i class="fas fa-${['gauge', 'layer-group', 'server', 'chart-line', 'bell', 'cog'][i % 6]}"></i>
+                <span>${escapeHtml(item)}</span>
+            </button>
+        `).join('');
+
+        const statCardsHTML = stats.map(s => `
+            <div class="demo-stat-card">
+                <div class="demo-stat-icon"><i class="${s.icon || 'fas fa-circle'}"></i></div>
+                <div class="demo-stat-body">
+                    <span class="demo-stat-label">${escapeHtml(s.label)}</span>
+                    <span class="demo-stat-value">${escapeHtml(s.value)}</span>
+                    <span class="demo-stat-trend">${escapeHtml(s.trend || '')}</span>
+                </div>
+            </div>
+        `).join('');
+
+        // Mock service status rows
+        const statusRows = [
+            { name: 'api-gateway', status: 'Healthy', latency: '127ms' },
+            { name: 'user-service', status: 'Healthy', latency: '98ms' },
+            { name: 'order-service', status: 'Healthy', latency: '156ms' },
+            { name: 'payment-service', status: 'Degraded', latency: '312ms' },
+            { name: 'inventory-service', status: 'Healthy', latency: '87ms' }
+        ];
+        const statusHTML = statusRows.map(r => `
+            <div class="demo-status-row">
+                <span class="demo-status-dot demo-status-dot--${r.status === 'Healthy' ? 'ok' : 'warn'}"></span>
+                <span class="demo-status-name">${escapeHtml(r.name)}</span>
+                <span class="demo-status-label demo-status-label--${r.status === 'Healthy' ? 'ok' : 'warn'}">${escapeHtml(r.status)}</span>
+                <span class="demo-status-latency">${escapeHtml(r.latency)}</span>
+            </div>
+        `).join('');
+
+        // Mock log entries
+        const logEntries = [
+            { time: '15:42:30', level: 'INFO',  source: 'api-gateway',       msg: 'Petición procesada: GET /api/users · 200 OK' },
+            { time: '15:42:29', level: 'INFO',  source: 'user-service',      msg: 'Usuario encontrado: ID 12345' },
+            { time: '15:42:29', level: 'WARN',  source: 'payment-service',   msg: 'Latencia alta detectada: 312ms' },
+            { time: '15:42:28', level: 'INFO',  source: 'order-service',     msg: 'Orden creada: ORD-2026-0523-001' },
+            { time: '15:42:28', level: 'INFO',  source: 'inventory-service', msg: 'Stock verificado: 15 unidades disponibles' }
+        ];
+        const logsHTML = logEntries.map(l => `
+            <div class="demo-log-row">
+                <span class="demo-log-time">${escapeHtml(l.time)}</span>
+                <span class="demo-log-level demo-log-level--${l.level.toLowerCase()}">${escapeHtml(l.level)}</span>
+                <span class="demo-log-source">[${escapeHtml(l.source)}]</span>
+                <span class="demo-log-msg">${escapeHtml(l.msg)}</span>
+            </div>
+        `).join('');
+
+        return `
+            <button type="button" onclick="window.backToProjects()" class="proj-detail-back-link">
+                <i class="fas fa-arrow-left"></i>
+                <span>Volver a Proyectos</span>
+            </button>
+            <div class="proj-detail-page proj-demo-page" style="--accent-color: ${accent};">
+                <!-- Status banner -->
+                <div class="demo-status-banner">
+                    <span class="demo-status-active"><span class="demo-status-active-dot"></span>Live Demo Activa</span>
+                    <p>Explora la plataforma en tiempo real. Interactúa con los controles para ver cómo <strong>${escapeHtml(project.title)}</strong> gestiona el sistema en producción.</p>
+                </div>
+
+                <div class="demo-shell">
+                    <!-- Browser chrome -->
+                    <div class="demo-browser-frame">
+                        <div class="demo-browser-bar">
+                            <span class="demo-browser-dot demo-browser-dot--r"></span>
+                            <span class="demo-browser-dot demo-browser-dot--y"></span>
+                            <span class="demo-browser-dot demo-browser-dot--g"></span>
+                            <div class="demo-browser-url">
+                                <i class="fas fa-lock"></i>
+                                <span>https://${escapeHtml(url)}/dashboard</span>
+                            </div>
+                            <div class="demo-browser-controls">
+                                <i class="fas fa-download"></i>
+                                <i class="fas fa-plus"></i>
+                                <i class="fas fa-bars"></i>
+                            </div>
+                        </div>
+
+                        <div class="demo-browser-body">
+                            <!-- Sidebar -->
+                            <aside class="demo-sidebar">
+                                <div class="demo-sidebar-brand">
+                                    <div class="demo-sidebar-logo"><i class="${primaryIcon}"></i></div>
+                                    <div class="demo-sidebar-brand-text">
+                                        <span>${escapeHtml(project.title)}</span>
+                                        <small>${escapeHtml(project.tagline || 'Live Demo')}</small>
+                                    </div>
+                                </div>
+                                <nav class="demo-menu">${menuItemsHTML}</nav>
+                                <div class="demo-sidebar-status">
+                                    <span class="demo-sidebar-status-dot"></span>
+                                    <div>
+                                        <strong>Sistema Saludable</strong>
+                                        <small>Todos los servicios operativos</small>
+                                    </div>
+                                </div>
+                            </aside>
+
+                            <!-- Main content -->
+                            <main class="demo-main">
+                                <div class="demo-main-header">
+                                    <div>
+                                        <h2>Resumen del Sistema</h2>
+                                        <p>Vista general del estado de la plataforma y servicios</p>
+                                    </div>
+                                    <div class="demo-main-controls">
+                                        <label class="demo-toggle">
+                                            <span>Auto-refresh</span>
+                                            <input type="checkbox" checked>
+                                            <span class="demo-toggle-slider"></span>
+                                        </label>
+                                        <button type="button" class="demo-range-btn">Últimos 5 minutos <i class="fas fa-chevron-down"></i></button>
+                                    </div>
+                                </div>
+
+                                ${statCardsHTML ? `<div class="demo-stat-grid">${statCardsHTML}</div>` : ''}
+
+                                <div class="demo-section">
+                                    <div class="demo-section-head">
+                                        <h3>Tráfico de Peticiones</h3>
+                                        <span class="demo-section-legend">
+                                            <span><i class="fas fa-circle" style="color:#22c55e"></i>Exitosas</span>
+                                            <span><i class="fas fa-circle" style="color:#ef4444"></i>Errores</span>
+                                            <span><i class="fas fa-circle" style="color:#22d3ee"></i>Total</span>
+                                        </span>
+                                    </div>
+                                    <div class="demo-chart">
+                                        <svg viewBox="0 0 600 160" preserveAspectRatio="none">
+                                            <path d="M 0 130 L 60 105 L 120 115 L 180 80 L 240 95 L 300 60 L 360 75 L 420 50 L 480 65 L 540 40 L 600 55" fill="none" stroke="#22d3ee" stroke-width="2"/>
+                                            <path d="M 0 145 L 60 140 L 120 142 L 180 138 L 240 144 L 300 135 L 360 140 L 420 130 L 480 135 L 540 128 L 600 132" fill="none" stroke="#ef4444" stroke-width="1.5"/>
+                                            <path d="M 0 120 L 60 95 L 120 105 L 180 70 L 240 85 L 300 50 L 360 65 L 420 40 L 480 55 L 540 30 L 600 45" fill="none" stroke="#22c55e" stroke-width="2"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="demo-two-col">
+                                    <div class="demo-section">
+                                        <div class="demo-section-head">
+                                            <h3>Estado de Servicios</h3>
+                                            <button class="demo-link-btn">Ver todos</button>
+                                        </div>
+                                        <div class="demo-status-list">${statusHTML}</div>
+                                    </div>
+                                    <div class="demo-section">
+                                        <div class="demo-section-head">
+                                            <h3>Logs en Vivo</h3>
+                                            <button class="demo-link-btn">Ver todos los logs</button>
+                                        </div>
+                                        <div class="demo-logs">${logsHTML}</div>
+                                    </div>
+                                </div>
+                            </main>
+
+                            <!-- Right control panel -->
+                            <aside class="demo-control-panel">
+                                <h3 class="demo-control-title">Panel de Control</h3>
+                                <p class="demo-control-desc">Interactúa con la demo en tiempo real</p>
+
+                                <div class="demo-control-card">
+                                    <h4><i class="fas fa-bolt"></i>Escalabilidad</h4>
+                                    <p>Simula aumento de carga y auto-escalado.</p>
+                                    <button class="demo-control-btn demo-control-btn--cyan"
+                                        onclick="alert('🚀 Auto-escalado activado: agregando 3 instancias adicionales...')">
+                                        <i class="fas fa-rocket"></i>Activar Auto-escalado
+                                    </button>
+                                </div>
+
+                                <div class="demo-control-card">
+                                    <h4><i class="fas fa-chart-line"></i>Generar Tráfico</h4>
+                                    <p>Genera tráfico de prueba en la plataforma.</p>
+                                    <button class="demo-control-btn demo-control-btn--cyan"
+                                        onclick="alert('📈 Generando 1,000 peticiones/seg por 60 segundos...')">
+                                        <i class="fas fa-chart-line"></i>Generar Carga de Prueba
+                                    </button>
+                                </div>
+
+                                <div class="demo-control-card">
+                                    <h4><i class="fas fa-list"></i>Ver Logs Detallados</h4>
+                                    <p>Explora los logs del sistema en tiempo real.</p>
+                                    <button class="demo-control-btn demo-control-btn--cyan"
+                                        onclick="alert('📋 Conectando al stream de logs en vivo...')">
+                                        <i class="fas fa-stream"></i>Ver Logs en Vivo
+                                    </button>
+                                </div>
+
+                                <div class="demo-control-card">
+                                    <h4><i class="fas fa-triangle-exclamation"></i>Simular Error</h4>
+                                    <p>Simula un error para ver alertas en acción.</p>
+                                    <button class="demo-control-btn demo-control-btn--warn"
+                                        onclick="alert('⚠️ Error 500 simulado: alerta enviada al equipo de guardia')">
+                                        <i class="fas fa-triangle-exclamation"></i>Simular Error 500
+                                    </button>
+                                </div>
+
+                                <div class="demo-control-card">
+                                    <h4><i class="fas fa-rotate-right"></i>Reset Demo</h4>
+                                    <p>Reinicia el entorno de la demo.</p>
+                                    <button class="demo-control-btn demo-control-btn--red"
+                                        onclick="alert('🔄 Reiniciando demo... vuelve en 5 segundos')">
+                                        <i class="fas fa-rotate-right"></i>Resetear Demo
+                                    </button>
+                                </div>
+
+                                <div class="demo-control-info">
+                                    <h5>Información de la Demo</h5>
+                                    <div><span>Duración de sesión:</span><strong>02:45</strong></div>
+                                    <div><span>Acciones realizadas:</span><strong>7</strong></div>
+                                    <div><span>Estado:</span><strong style="color:#22c55e">● Activo</strong></div>
+                                    <p>Los cambios se reinician automáticamente después de 10 minutos de inactividad.</p>
+                                </div>
+                            </aside>
+                        </div>
+
+                        <div class="demo-browser-footer">
+                            <span class="demo-footer-item"><span class="demo-status-dot demo-status-dot--ok"></span>Conectado</span>
+                            <span class="demo-footer-item">Región: us-east-1</span>
+                            <span class="demo-footer-item">Versión: 2.1.0</span>
+                            <span class="demo-footer-item">Uptime: 99.95%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="proj-detail-footer">
+                    <button type="button" onclick="window.backToProjects()" class="proj-btn proj-btn--ghost">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver a Proyectos</span>
+                    </button>
+                    <button type="button" onclick="window.openProjectCaseStudy(${project.id})" class="proj-btn proj-btn--primary">
+                        <span>Ver Caso de Estudio</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    };
+
+    window.openProjectLiveDemo = function (projectId) {
+        const project = data.find(p => String(p.id) === String(projectId));
+        if (!project) return;
+        if (!project.liveDemo) {
+            alert('Demo no disponible para este proyecto aún.');
+            return;
+        }
+
+        const detailSection = document.getElementById('project-detail-section');
+        const detailContent = document.getElementById('project-detail-content');
+        if (!detailSection || !detailContent) return;
+
+        detailContent.innerHTML = buildLiveDemoHTML(project);
+
+        // Hide everything else
+        hiddenSections = [];
+        document.querySelectorAll('section').forEach(sec => {
+            if (sec.id !== 'project-detail-section' && !sec.hasAttribute('hidden')) {
+                sec.hidden = true;
+                hiddenSections.push(sec);
+            }
+        });
+        const footer = document.querySelector('footer');
+        if (footer) {
+            footer.style.display = 'none';
+            hiddenSections.push(footer);
+        }
+
+        detailSection.hidden = false;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 }

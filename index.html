@@ -58,12 +58,12 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="#about">Sobre Mí</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#projects">Proyectos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#certificates">Certificaciones</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#experience">Experiencia</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about"><i class="fas fa-user nav-link-icon"></i><span>Sobre Mí</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projects"><i class="fas fa-folder-open nav-link-icon"></i><span>Proyectos</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#certificates"><i class="fas fa-certificate nav-link-icon"></i><span>Certificaciones</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills"><i class="fas fa-code nav-link-icon"></i><span>Skills</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#experience"><i class="fas fa-briefcase nav-link-icon"></i><span>Experiencia</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact"><i class="fas fa-envelope nav-link-icon"></i><span>Contacto</span></a></li>
                     <li class="nav-item">
                         <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema">
                             <i class="fas fa-moon"></i>
@@ -73,6 +73,16 @@
             </div>
         </div>
     </nav>
+
+    <!-- Project Case Study Page — hidden by default, takes over main content
+         when "Ver Caso" is clicked. Navbar above stays visible. -->
+    <section id="project-detail-section" class="project-detail-section" hidden>
+        <div class="container">
+            <div id="project-detail-content">
+                <!-- Populated dynamically by openProjectCaseStudy(id) -->
+            </div>
+        </div>
+    </section>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
@@ -255,9 +265,9 @@
                     <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">Mi trayectoria laboral a través
                         del tiempo</p>
 
-                    <!-- Timeline Structure -->
-                    <div id="experience-timeline" class="timeline">
-                        <!-- Experience will be loaded here as timeline items -->
+                    <!-- Horizontal Career Path — populated by Experience.js -->
+                    <div id="experience-timeline">
+                        <!-- Career nodes injected by JS -->
                     </div>
                 </div>
             </div>
@@ -353,71 +363,63 @@
                     <!-- Social Media Cards (Horizontal) -->
                     <div class="row mt-5 justify-content-center g-4" data-aos="fade-up" data-aos-delay="200">
                         <div class="col-12 text-center mb-2">
-                            <h2 class="section-title glitch-text" data-text="Mis Redes Sociales" data-aos="fade-up">Mis
-                                Redes Sociales</h2>
+                            <h2 class="section-title glitch-text" data-text="Conecta Conmigo" data-aos="fade-up">Conecta
+                                Conmigo</h2>
                         </div>
 
                         <!-- GitHub -->
                         <div class="col-lg-3 col-md-6">
-                            <a href="#" target="_blank" class="social-card-link">
-                                <div class="social-card github">
-                                    <div class="d-flex align-items-center">
-                                        <i class="fab fa-github social-icon-large"></i>
-                                        <div class="social-info">
-                                            <h5>GitHub</h5>
-                                            <span>Seguir en GitHub</span>
-                                        </div>
-                                    </div>
-                                    <i class="fas fa-share arrow-icon"></i>
+                            <a href="https://github.com/yelsen-gonzales-huaromo" target="_blank" rel="noopener" class="social-3d-link" style="--social-color: #6e5494;">
+                                <div class="social-3d-icon">
+                                    <i class="fab fa-github"></i>
                                 </div>
+                                <div class="social-3d-info">
+                                    <h5>GitHub</h5>
+                                    <span>Ver mis proyectos</span>
+                                </div>
+                                <i class="fas fa-arrow-right social-3d-arrow"></i>
                             </a>
                         </div>
 
                         <!-- LinkedIn -->
                         <div class="col-lg-3 col-md-6">
-                            <a href="#" target="_blank" class="social-card-link">
-                                <div class="social-card linkedin">
-                                    <div class="d-flex align-items-center">
-                                        <i class="fab fa-linkedin-in social-icon-large"></i>
-                                        <div class="social-info">
-                                            <h5>LinkedIn</h5>
-                                            <span>Seguir en LinkedIn</span>
-                                        </div>
-                                    </div>
-                                    <i class="fas fa-share arrow-icon"></i>
+                            <a href="https://www.linkedin.com/in/yelsen-gonzales-huaromo/" target="_blank" rel="noopener" class="social-3d-link" style="--social-color: #0a66c2;">
+                                <div class="social-3d-icon">
+                                    <i class="fab fa-linkedin-in"></i>
                                 </div>
+                                <div class="social-3d-info">
+                                    <h5>LinkedIn</h5>
+                                    <span>Conecta conmigo</span>
+                                </div>
+                                <i class="fas fa-arrow-right social-3d-arrow"></i>
                             </a>
                         </div>
 
-                        <!-- Instagram -->
+                        <!-- WhatsApp -->
                         <div class="col-lg-3 col-md-6">
-                            <a href="#" target="_blank" class="social-card-link">
-                                <div class="social-card instagram">
-                                    <div class="d-flex align-items-center">
-                                        <i class="fab fa-instagram social-icon-large"></i>
-                                        <div class="social-info">
-                                            <h5>Instagram</h5>
-                                            <span>Seguir en Instagram</span>
-                                        </div>
-                                    </div>
-                                    <i class="fas fa-share arrow-icon"></i>
+                            <a href="https://wa.me/51910706967" target="_blank" rel="noopener" class="social-3d-link" style="--social-color: #25d366;">
+                                <div class="social-3d-icon">
+                                    <i class="fab fa-whatsapp"></i>
                                 </div>
+                                <div class="social-3d-info">
+                                    <h5>WhatsApp</h5>
+                                    <span>Escríbeme directo</span>
+                                </div>
+                                <i class="fas fa-arrow-right social-3d-arrow"></i>
                             </a>
                         </div>
 
-                        <!-- TikTok -->
+                        <!-- Email -->
                         <div class="col-lg-3 col-md-6">
-                            <a href="#" target="_blank" class="social-card-link">
-                                <div class="social-card tiktok">
-                                    <div class="d-flex align-items-center">
-                                        <i class="fab fa-tiktok social-icon-large"></i>
-                                        <div class="social-info">
-                                            <h5>TikTok</h5>
-                                            <span>Seguir en TikTok</span>
-                                        </div>
-                                    </div>
-                                    <i class="fas fa-share arrow-icon"></i>
+                            <a href="mailto:g.hyelsen@gmail.com" class="social-3d-link" style="--social-color: #ea4335;">
+                                <div class="social-3d-icon">
+                                    <i class="fas fa-envelope"></i>
                                 </div>
+                                <div class="social-3d-info">
+                                    <h5>Email</h5>
+                                    <span>g.hyelsen@gmail.com</span>
+                                </div>
+                                <i class="fas fa-arrow-right social-3d-arrow"></i>
                             </a>
                         </div>
                     </div>
