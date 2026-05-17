@@ -1,30 +1,16 @@
 const educationData = [
     {
         id: 1,
-        degree: "Ingeniería de Sistemas e Informática",
-        institution: "Universidad Tecnológica",
-        period: "2015 - 2020",
-        description: "Especialización en desarrollo de software y gestión de proyectos tecnológicos."
+        degree: "Bachiller en Ingeniería de Sistemas e Informática",
+        institution: "Universidad Nacional Santiago Antúnez de Mayolo · UNASAM",
+        period: "2020 - 2025",
+        description: "Formación integral en desarrollo de software, arquitectura de sistemas, bases de datos y gestión de proyectos tecnológicos. Modalidad presencial. Grado obtenido por curso de trabajo de investigación (X ciclo)."
     },
     {
         id: 2,
-        degree: "Certificación AWS Solutions Architect",
-        institution: "Amazon Web Services",
-        period: "2021",
-        description: "Validación de competencias en diseño de sistemas distribuidos en la nube."
-    },
-    {
-        id: 3,
-        degree: "Master en Inteligencia Artificial",
-        institution: "Tech University",
+        degree: "Inglés Básico A1",
+        institution: "Centro de Idiomas · UNASAM",
         period: "2022 - 2023",
-        description: "Formación avanzada en algoritmos de aprendizaje automático, redes neuronales y visión por computador."
-    },
-    {
-        id: 4,
-        degree: "Full Stack Web Development",
-        institution: "Bootcamp Academy",
-        period: "2020",
-        description: "Programa intensivo de 6 meses enfocado en MERN Stack y arquitectura de microservicios."
+        description: "Programa intensivo de 285 horas académicas. Comprensión y producción oral y escrita en contextos cotidianos y profesionales. Certificación oficial otorgada por la Vicerrectoría Académica."
     }
 ];

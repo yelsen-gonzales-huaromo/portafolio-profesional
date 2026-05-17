@@ -79,19 +79,45 @@ export function initNavbar() {
         });
     }
 
-    // Scroll Effect
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
+    // Scroll-to-top button
+    const scrollTopBtn = document.getElementById('scroll-top-btn');
+    const progressBar = scrollTopBtn?.querySelector('.stb-bar');
+    const PROGRESS_LENGTH = 163.36; // 2 * π * 26
+
+    const updateScrollUI = () => {
+        const y = window.scrollY;
+
+        // Navbar shadow
+        if (navbar) {
+            navbar.classList.toggle('scrolled', y > 50);
         }
 
-        // Auto-close on scroll
+        // Auto-close mobile menu on scroll
         if (navbarCollapse && navbarCollapse.classList.contains('show')) {
             navbarToggler.click();
         }
-    });
+
+        // Show/hide scroll-to-top + update progress
+        if (scrollTopBtn) {
+            const shouldShow = y > 400;
+            scrollTopBtn.classList.toggle('is-visible', shouldShow);
+
+            if (progressBar) {
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = docHeight > 0 ? Math.min(y / docHeight, 1) : 0;
+                progressBar.style.strokeDashoffset = String(PROGRESS_LENGTH * (1 - progress));
+            }
+        }
+    };
+
+    window.addEventListener('scroll', updateScrollUI, { passive: true });
+    updateScrollUI();
+
+    if (scrollTopBtn) {
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
 
     // Close menu when clicking outside (excluding overlay as it has its own handler)
     document.addEventListener('click', (e) => {

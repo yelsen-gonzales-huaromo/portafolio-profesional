@@ -1,24 +1,28 @@
 const profileData = {
     brandName: "{codeia}",
     brandTagline: "Consultoría & Desarrollo",
-    name: "Gonzales Huaromo Yelsen Fernández",
-    role: "Software Engineer & Full Stack Developer",
-    roles: ["Software Engineer", "Desarrollador Full Stack", "Cloud Architect", "Innovador Tecnológico"],
-    heroHeadline: "Construyendo Soluciones Digitales de Alto Impacto",
-    heroText: "Transformando ideas en soluciones digitales innovadoras con código limpio y arquitecturas escalables.",
+    name: "Yelsen Fernández Gonzales Huaromo",
+    role: "Software Engineer · Full Stack · DevOps",
+    roles: [
+        "Software Engineer",
+        "Full Stack Developer",
+        "DevOps Engineer",
+        "Cloud Solutions Builder"
+    ],
+    heroHeadline: "Construyendo soluciones digitales de alto impacto",
+    heroText: "Ingeniero de Sistemas especializado en arquitecturas escalables con .NET 9, Spring Boot y Laravel. Diseño APIs, automatizo infraestructura en AWS y Azure, y entrego software listo para producción.",
     aboutTitle: "Sobre Mí",
     aboutSubtitle: "Ingeniero apasionado por la tecnología y la innovación",
     aboutDescription: `
-        Ingeniero de Sistemas con más de X años de experiencia desarrollando aplicaciones web y móviles de alto rendimiento. Especializado en arquitecturas cloud, microservicios y metodologías ágiles.
-        <br><br>
-        Mi enfoque se centra en crear soluciones que no solo resuelvan problemas técnicos, sino que también generen valor real para los usuarios y las empresas. Me apasiona aprender nuevas tecnologías y compartir conocimiento con la comunidad.
+        Soy <strong>Ingeniero de Sistemas</strong>, me apasiona convertir problemas complejos en software que realmente funciona. Me mueve la <strong>curiosidad por aprender</strong>, la disciplina del código limpio y el reto de construir sistemas que <strong>escalen sin volverse un dolor de cabeza</strong>. Disfruto trabajar en equipo, cuestionar decisiones técnicas con respeto y entregar resultados medibles. Busco sumarme a un equipo donde el impacto importe más que las horas frente a la pantalla.
     `,
-    aboutQuote: "La tecnología es mejor cuando une a las personas.",
+    aboutQuote: "El mejor código no es el más elegante, sino el que entrega valor real y se puede mantener mañana.",
     socialLinks: {
-        github: "https://github.com/",
-        linkedin: "https://linkedin.com/",
+        github: "https://github.com/yelsen-gonzales-huaromo",
+        linkedin: "https://www.linkedin.com/in/yelsen-gonzales-huaromo/",
         instagram: "https://instagram.com/",
-        whatsapp: "https://wa.me/1234567890",
-        tiktok: "https://tiktok.com/@usuario"
+        whatsapp: "https://wa.me/51910706967",
+        tiktok: "https://tiktok.com/@usuario",
+        email: "mailto:g.hyelsen@gmail.com"
     }
 };

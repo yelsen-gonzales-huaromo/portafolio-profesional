@@ -4,7 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yelsen Gonzales Huaromo Yelsen - Portafolio</title>
+    <title>Yelsen Gonzales Huaromo · Software Engineer & Full Stack Developer</title>
+    <meta name="description" content="Portafolio de Yelsen Gonzales Huaromo — Software Engineer especializado en desarrollo full-stack, arquitectura cloud y soluciones digitales escalables. Disponible para proyectos y oportunidades profesionales.">
+    <meta name="author" content="Yelsen Gonzales Huaromo">
+    <meta name="keywords" content="Software Engineer, Full Stack Developer, Cloud Architect, Portafolio, Desarrollador Web, React, Node.js, AWS">
+
+    <!-- Open Graph / LinkedIn / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Yelsen Gonzales Huaromo · Software Engineer">
+    <meta property="og:description" content="Software Engineer especializado en desarrollo full-stack y arquitectura cloud. Construyendo soluciones digitales de alto impacto.">
+    <meta property="og:image" content="images/og-cover.png">
+    <meta property="og:url" content="https://yelsen-gonzales-huaromo.github.io/">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Yelsen Gonzales Huaromo · Software Engineer">
+    <meta name="twitter:description" content="Portafolio profesional · Full-Stack & Cloud Architecture">
+    <meta name="twitter:image" content="images/og-cover.png">
+
+    <!-- Theme color for mobile -->
+    <meta name="theme-color" content="#22d3ee">
+
+    <link rel="canonical" href="https://yelsen-gonzales-huaromo.github.io/">
     <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
 
     <link href="https://fonts.googleapis.com/css?family=Exo:100,200,300,400" rel="stylesheet">
@@ -16,6 +37,8 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <!-- Modern UI Overhaul (Projects · Certificates · Education · Modals) -->
+    <link rel="stylesheet" href="css/components/modern.css">
     <!-- 🔒 Protección Anti-Clonado -->
     <link rel="stylesheet" href="css/security.css">
 </head>
@@ -61,9 +84,11 @@
                             <h1 id="hero-title"></h1>
                             <h1 id="hero-role"></h1>
                             <p id="hero-text"></p>
-                            <div class="d-flex gap-3 mb-4">
+                            <div class="d-flex gap-3 mb-4 flex-wrap">
                                 <a href="#projects" class="btn btn-primary-custom">Ver Proyectos</a>
-                                <a href="#" class="btn btn-outline-custom">Descargar CV</a>
+                                <a href="images/CV-Yelsen%20Gonzales%20Huaromo.pdf" download="CV-Yelsen-Gonzales-Huaromo.pdf" class="btn btn-outline-custom">
+                                    <i class="fas fa-download me-2"></i>Descargar CV
+                                </a>
                             </div>
                             <div class="social-stack" id="hero-socials">
                                 <!-- Social links will be loaded here -->
@@ -86,12 +111,29 @@
                     <div class="row align-items-center">
                         <!-- 3D Avatar Column -->
                         <div class="col-lg-5 mb-5 mb-lg-0 text-center" data-aos="fade-right">
-                            <div class="about-image-container">
+                            <div class="about-image-container about-3d-container">
                                 <div class="image-glow"></div>
-                                <!-- Male Developer 3D Avatar -->
-                                <img src="https://cdni.iconscout.com/illustration/premium/thumb/web-development-2974925-2477356.png"
-                                    alt="Desarrollador 3D" class="img-fluid floating-avatar" id="about-avatar"
-                                    loading="lazy">
+                                <!-- 3D Interactive Model (GLB via Google model-viewer) -->
+                                <model-viewer
+                                    id="about-3d-model"
+                                    src="images/kamisama_planet.glb"
+                                    alt="Modelo 3D interactivo · Yelsen Gonzales Huaromo"
+                                    auto-rotate
+                                    auto-rotate-delay="500"
+                                    rotation-per-second="20deg"
+                                    camera-controls
+                                    touch-action="pan-y"
+                                    interaction-prompt="none"
+                                    shadow-intensity="1"
+                                    exposure="1"
+                                    environment-image="neutral"
+                                    disable-zoom
+                                    loading="lazy"
+                                    reveal="auto">
+                                    <div slot="progress-bar" class="m3d-progress">
+                                        <div class="m3d-progress-bar"></div>
+                                    </div>
+                                </model-viewer>
                                 <!-- Badge -->
                                 <div class="experience-badge floating-badge">
                                     <span class="h3 mb-0">3+</span>
@@ -111,11 +153,9 @@
                                 <p class="mb-0 fst-italic" id="about-quote"></p>
                             </div>
 
-                            <div class="d-flex gap-3 mb-5">
-                                <a href="#" class="btn btn-primary-custom"><i class="fas fa-download me-2"></i>Descargar
-                                    CV</a>
-                                <a href="#projects" class="btn btn-outline-custom"><i class="fas fa-eye me-2"></i>Ver
-                                    Proyectos</a>
+                            <div class="d-flex gap-3 mb-5 flex-wrap">
+                                <a href="images/CV-Yelsen%20Gonzales%20Huaromo.pdf" download="CV-Yelsen-Gonzales-Huaromo.pdf" class="btn btn-primary-custom"><i class="fas fa-download me-2"></i>Descargar CV</a>
+                                <a href="#projects" class="btn btn-outline-custom"><i class="fas fa-eye me-2"></i>Ver Proyectos</a>
                             </div>
                         </div>
                     </div>
@@ -386,6 +426,16 @@
         </div>
     </section>
 
+    <!-- Scroll to Top Button -->
+    <button id="scroll-top-btn" class="scroll-top-btn" aria-label="Volver al inicio" title="Volver al inicio">
+        <svg class="stb-progress" viewBox="0 0 56 56" aria-hidden="true">
+            <circle class="stb-track" cx="28" cy="28" r="26"></circle>
+            <circle class="stb-bar" cx="28" cy="28" r="26"
+                    stroke-dasharray="163.36" stroke-dashoffset="163.36"></circle>
+        </svg>
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <!-- Footer -->
     <footer>
         <div class="container">
@@ -397,60 +447,67 @@
 
 
     <!-- All Projects Modal -->
-    <div class="modal fade" id="allProjectsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade modal-modern" id="allProjectsModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content modal-glass">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title text-gradient">Todos los Proyectos</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Todos los Proyectos</h5>
+                    <button type="button" class="btn-close-modern" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-                <div class="modal-body">
-                    <div class="row g-4" id="all-projects-container">
-                        <!-- Content injected via JS -->
-                    </div>
-                </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-outline-light rounded-pill"
-                        data-bs-dismiss="modal">Cerrar</button>
+                <div class="modal-body" id="all-projects-container">
+                    <!-- Content injected via JS -->
                 </div>
             </div>
         </div>
     </div>
 
     <!-- All Certificates Modal -->
-    <div class="modal fade" id="allCertificatesModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade modal-modern" id="allCertificatesModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content modal-glass">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title text-gradient">Todas las Certificaciones</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Todas las Certificaciones</h5>
+                    <button type="button" class="btn-close-modern" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-                <div class="modal-body">
-                    <div class="row g-4" id="all-certificates-container">
-                        <!-- Content injected via JS -->
-                    </div>
-                </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-outline-light rounded-pill"
-                        data-bs-dismiss="modal">Cerrar</button>
+                <div class="modal-body" id="all-certificates-container">
+                    <!-- Content injected via JS -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- View Certificate Modal (Image/PDF) -->
-    <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <!-- All Education Modal -->
+    <div class="modal fade modal-modern" id="allEducationModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content modal-glass border-0">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title text-white" id="viewModalTitle">Vista Previa</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Toda mi Formación Académica</h5>
+                    <button type="button" class="btn-close-modern" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-                <div class="modal-body p-0 d-flex justify-content-center align-items-center" id="modalViewBody"
-                    style="min-height: 500px; background: rgba(0,0,0,0.2);">
+                <div class="modal-body" id="all-education-container">
+                    <!-- Content injected via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unified Preview Modal — same shell as list modals, renders one expanded kit-card -->
+    <div class="modal fade modal-modern" id="previewModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="previewModalTitle">Vista Previa</h5>
+                    <button type="button" class="btn-close-modern" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body" id="previewModalBody">
                     <!-- Content injected via JS -->
                 </div>
             </div>
@@ -460,6 +517,9 @@
     <!-- Scripts -->
     <!-- 🔒 SISTEMA DE SEGURIDAD - Debe cargarse PRIMERO -->
     <script src="js/security.js"></script>
+
+    <!-- Google model-viewer for 3D GLB rendering -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

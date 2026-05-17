@@ -39,5 +39,23 @@ document.addEventListener('DOMContentLoaded', () => {
     initGridInteraction();
     initFloatingShapes();
     initNavbar();
+    init3DModelProgress();
 });
+
+// Wire up <model-viewer> loading progress to our custom bar
+function init3DModelProgress() {
+    const modelEl = document.getElementById('about-3d-model');
+    if (!modelEl) return;
+    const bar = modelEl.querySelector('.m3d-progress-bar');
+    const wrap = modelEl.querySelector('.m3d-progress');
+    if (!bar || !wrap) return;
+
+    modelEl.addEventListener('progress', (event) => {
+        const ratio = event.detail.totalProgress;
+        bar.style.width = `${ratio * 100}%`;
+        if (ratio >= 1) {
+            setTimeout(() => { wrap.style.opacity = '0'; }, 200);
+        }
+    });
+}
 
